@@ -1,22 +1,29 @@
 @Test
-		public void testSetAdvisor() {
-			//First time set advisor
+		public void testSetAdvisorAssert() {
 			PHD person0 = new PHD("Lei Zhou",'m', 2016, 5);
 			PHD person1 = new PHD("Yingwen Cai",'f', 1990, 8);
 			PHD person2 = new PHD("Hao Rong",'m', 2000, 6);
-			person0.setAdvisor1(person1);
-			person0.setAdvisor2(person2);
-			assertEquals(person0.advisor1(), person1);
-			assertEquals(person0.advisor2(), person2);
-			assertEquals(person1.numAdvises(), 1);
-			assertEquals(person2.numAdvises(), 1);
-			
-			//Add more advisee to an advisor
 			PHD person4 = new PHD("Zongze Guo",'m', 2018, 5);
-			person4.setAdvisor1(person0);
-			person4.setAdvisor2(person1);
-			assertEquals(person4.advisor1(), person0);
-			assertEquals(person4.advisor2(), person1);
-			assertEquals(person0.numAdvises(), 1);
-			assertEquals(person1.numAdvises(), 2);
-		} 
+			
+			try {
+				person0.setAdvisor1(null); // assert variable is not null
+				person0.setAdvisor1(person1);
+				person0.setAdvisor1(person2); //assert advisor1 is unknown
+		        fail("The assert codes are not working properly.");
+		    }
+		    catch (AssertionError e) {
+		        System.out.println("Caught " + e.getMessage());
+		    }
+			
+			try {
+				person0.setAdvisor1(person1);
+				person0.setAdvisor2(null); // assert variable is not null
+				person0.setAdvisor2(person1); // assert advisor2 is different from advisor1
+				person0.setAdvisor2(person2);
+				person0.setAdvisor2(person4); // assert advisor2 is unknown
+		        fail("The assert codes are not working properly.");
+		    }
+		    catch (AssertionError e) {
+		        System.out.println("Caught " + e.getMessage());
+		    }
+		}
