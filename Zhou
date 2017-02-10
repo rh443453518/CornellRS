@@ -1,18 +1,53 @@
-///Test case group of D
-		@Test
+@Test
 		public void testCompare() {
 			//Test gotBefore
-			PHD person0 = new PHD("Lei Zhou",'m', 2016, 5);
-			PHD person1 = new PHD("Yingwen Cai",'f', 1990, 8);
-			PHD person2 = new PHD("Hao Rong",'m', 2000, 6);
-			PHD person4 = new PHD("Zongze Guo",'m', 2018, 5);
-			assertEquals(person0.gotBefore(person2), false);
-			assertEquals(person1.gotBefore(person2), true);
+			PHD pA = new PHD("Yingwen Cai",'f', 1990, 8);
+			PHD pB = new PHD("Hao Rong",'m', 2000, 6);
+			PHD pC = new PHD("Zongze Guo",'m', 2018, 5);
+			PHD pD = new PHD("Wei Zhao",'f', 2018, 5);
+			assertEquals(pC.gotBefore(pB), false);
+			assertEquals(pA.gotBefore(pB), true);
 			
-			//Add more advisee to an advisor
-			person0.setAdvisor1(person2);
-			person1.setAdvisor1(person2);
-			assertEquals(person0.arePHDSiblings(person1), true);
-			assertEquals(person0.arePHDSiblings(person0), false);
-			assertEquals(person0.arePHDSiblings(person2), false);
-		} 
+			//Test arePHDSiblings
+			PHD p0 = new PHD("C",'f', 1990, 8);
+			PHD p1 = new PHD("C",'f', 1990, 8);
+			PHD p2 = new PHD("C",'f', 1990, 8, pA);
+			PHD p3 = new PHD("C",'f', 1990, 8, pA, pB);
+			PHD p4 = new PHD("C",'f', 1990, 8, pC);
+			PHD p5 = new PHD("C",'f', 1990, 8, pC, pD);
+			PHD p6 = new PHD("C",'f', 1990, 8, pA);
+			PHD p7 = new PHD("C",'f', 1990, 8, pA, pC);
+			PHD p8 = new PHD("C",'f', 1990, 8, pB);
+			PHD p9 = new PHD("C",'f', 1990, 8, pB, pC);
+			PHD p10 = new PHD("C",'f', 1990, 8, pA, pB);
+
+			//Test False case
+			assertEquals(p0.arePHDSiblings(p1), false);
+			assertEquals(p0.arePHDSiblings(p2), false);
+			assertEquals(p0.arePHDSiblings(p3), false);
+			assertEquals(p2.arePHDSiblings(p4), false);
+			assertEquals(p3.arePHDSiblings(p4), false);
+			assertEquals(p3.arePHDSiblings(p5), false);
+			
+			//Test True case
+			assertEquals(p2.arePHDSiblings(p6), true);
+			assertEquals(p3.arePHDSiblings(p6), true);
+			assertEquals(p3.arePHDSiblings(p7), true);
+			assertEquals(p3.arePHDSiblings(p8), true);
+			assertEquals(p3.arePHDSiblings(p9), true);
+			assertEquals(p3.arePHDSiblings(p10), true);
+			
+			//Test comparison to itself, and parent
+			assertEquals(p0.arePHDSiblings(p0), false);
+			assertEquals(p2.arePHDSiblings(pA), false);
+			assertEquals(p3.arePHDSiblings(pA), false);
+			
+			
+			try {
+				assertEquals(person0.arePHDSiblings(person0), false);
+				fail("PartD: The assert codes are working properly.");
+			}
+			catch (AssertionError e) {
+		        System.out.println("PartB2: Caught " + e.getMessage());
+			};
+		}
